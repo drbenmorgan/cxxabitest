@@ -6,7 +6,7 @@
 
 #include <cxxabi.h>
 
-#ifdef _LIBCPPABI_VERSION
+#ifdef CANVAS_USE_ROOTCPPABI
 #include "TClass.h"
 #include "TClassRef.h"
 #endif
@@ -18,7 +18,7 @@
 using namespace art;
 using namespace std;
 
-#ifdef _LIBCPPABI_VERSION
+#ifdef CANVAS_USE_ROOTCPPABI
 
 bool
 detail::upcastAllowed(type_info const& tid_from, type_info const& tid_to)
@@ -220,4 +220,4 @@ detail::maybeCastObj(void const* ptr,
   return static_cast<char const*>(ptr) + res.offset;
 }
 
-#endif // _LIBCPPABI_VERSION
+#endif // CANVAS_USE_ROOTCPPABI
