@@ -1,10 +1,9 @@
 #define BOOST_TEST_MODULE (Tests of maybeCastObj interface)
 #include "cetlib/quiet_unit_test.hpp"
-#include "cetlib/test_macros.h"
 
 #include <string>
 
-#include "canvas/Persistency/Common/detail/maybeCastObj.h"
+#include "maybeCastObj.h"
 namespace {
   // Helper function
   template <typename T, typename U>

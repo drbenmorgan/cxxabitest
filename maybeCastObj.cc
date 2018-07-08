@@ -1,4 +1,4 @@
-#include "canvas/Persistency/Common/detail/maybeCastObj.h"
+#include "maybeCastObj.h"
 // vim: set sw=2:
 
 #include "canvas/Utilities/Exception.h"
