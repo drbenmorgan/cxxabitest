@@ -91,12 +91,10 @@ BOOST_AUTO_TEST_CASE(user_types)
 
   // Between levels
   BOOST_TEST_REQUIRE( (runUpcastAllowed<MCConcreteVirtual_C,MCConcreteVirtual_B>()) );
-  // This fails on Clang... should it?
   BOOST_TEST_REQUIRE( (runUpcastAllowed<MCConcreteVirtual_C,MCConcrete>()) );
 
   // Multiple
   BOOST_TEST_REQUIRE( (runUpcastAllowed<MCConcreteMultiple, MCBase>()) );
-  // This fails on Clang... should it?
   BOOST_TEST_REQUIRE( (runUpcastAllowed<MCConcreteMultiple, MCOtherBase>()) );
 }
 
