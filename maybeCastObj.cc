@@ -128,7 +128,7 @@ namespace __cxxabiv1 {
     enum __flags_masks {
       __non_diamond_repeat_mask = 0x1,
       __diamond_shaped_mask = 0x2,
-      // __flags_unknown_mask = 0x10
+      __flags_unknown_mask = 0x10
     };
 
     explicit __vmi_class_type_info(char const* n, int flags)
