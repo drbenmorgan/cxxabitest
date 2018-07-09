@@ -77,7 +77,7 @@ or directly, using the Boost.Unit CLI to increase the logging level:
 ``` console
 $ ./maybeObjCastNative_t -l all
 ... if Root is available
-$ ./maybeObjCastNative_t -l all
+$ ./maybeObjCastRoot_t -l all
 ```
 
 Tests
