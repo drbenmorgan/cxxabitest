@@ -36,7 +36,7 @@ target_link_libraries(maybeCastObjNative_t PRIVATE maybeCast_native Boost::unit_
 
 
 # - Root TClass system
-find_package(ROOT)
+find_package(ROOT 6)
 if(ROOT_FOUND)
   add_library(maybeCast_root SHARED maybeCastObj.h maybeCastObj.cc)
   target_compile_definitions(maybeCast_root PRIVATE CANVAS_USE_ROOTCPPABI)
@@ -47,6 +47,4 @@ if(ROOT_FOUND)
   target_compile_definitions(maybeCastObjRoot_t PRIVATE BOOST_TEST_DYN_LINK BOOST_TEST_MAIN)
   target_link_libraries(maybeCastObjRoot_t PRIVATE maybeCast_root Boost::unit_test_framework)
 endif()
-
-
 
