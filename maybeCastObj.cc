@@ -90,7 +90,7 @@ namespace __cxxabiv1 {
   class __class_type_info : public std::type_info {
   public:
     explicit __class_type_info(char const* n) : type_info(n) {}
-    ~__class_type_info() override;
+    virtual ~__class_type_info() override;
   };
 
   // Type information for a class with a single non-virtual base
@@ -100,7 +100,7 @@ namespace __cxxabiv1 {
     explicit __si_class_type_info(char const* n, __class_type_info const* base)
       : __class_type_info(n), __base_type(base)
     {}
-    ~__si_class_type_info() override;
+    virtual ~__si_class_type_info() override;
   };
 
   // Helper class for __vmi_class_type.
@@ -134,7 +134,7 @@ namespace __cxxabiv1 {
     explicit __vmi_class_type_info(char const* n, int flags)
       : __class_type_info(n), __flags(flags), __base_count(0)
     {}
-    virtual ~__vmi_class_type_info(); // override;
+    virtual ~__vmi_class_type_info() override;
   };
 }
 #endif
