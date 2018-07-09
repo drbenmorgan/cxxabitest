@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
 project(cxxabitest)
 
+enable_testing()
+
 set(CMAKE_CXX_STANDARD REQUIRED)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 14)
@@ -33,7 +35,7 @@ target_link_libraries(maybeCast_native
 add_executable(maybeCastObjNative_t maybeCastObj_t.cc)
 target_compile_definitions(maybeCastObjNative_t PRIVATE BOOST_TEST_DYN_LINK BOOST_TEST_MAIN)
 target_link_libraries(maybeCastObjNative_t PRIVATE maybeCast_native Boost::unit_test_framework)
-
+add_test(NAME maybeCastObjNative_t COMMAND maybeCastObjNative_t -l all)
 
 # - Root TClass system
 find_package(ROOT 6)
@@ -46,5 +48,6 @@ if(ROOT_FOUND)
   add_executable(maybeCastObjRoot_t maybeCastObj_t.cc)
   target_compile_definitions(maybeCastObjRoot_t PRIVATE BOOST_TEST_DYN_LINK BOOST_TEST_MAIN)
   target_link_libraries(maybeCastObjRoot_t PRIVATE maybeCast_root Boost::unit_test_framework)
+  add_test(NAME maybeCastObjRoot_t COMMAND maybeCastObjRoot_t -l all)
 endif()
 

@@ -66,8 +66,15 @@ $ CC=clang CXX=clang++ cmake ..
 ```
 
 Assuming the configure and build run sucessfully, the tests can be
-run directly, using the Boost.Unit CLI to increase the logging level:
-...
+run through ctest:
+
+```console
+$ ctest
+```
+
+or directly, using the Boost.Unit CLI to increase the logging level:
+
+``` console
 $ ./maybeObjCastNative_t -l all
 ... if Root is available
 $ ./maybeObjCastNative_t -l all
