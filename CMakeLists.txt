@@ -23,7 +23,12 @@ target_include_directories(art_suite_shim PUBLIC ${PROJECT_SOURCE_DIR}/art_suite
 
 # - Native abi
 add_library(maybeCast_native SHARED maybeCastObj.h maybeCastObj.cc)
-target_link_libraries(maybeCast_native PUBLIC art_suite_shim)
+target_link_libraries(maybeCast_native
+  PUBLIC
+    art_suite_shim
+    # Use direct link, not totally portable to Clang...
+    $<$<CXX_COMPILER_ID:AppleClang>:c++abi>
+  )
 
 add_executable(maybeCastObjNative_t maybeCastObj_t.cc)
 target_compile_definitions(maybeCastObjNative_t PRIVATE BOOST_TEST_DYN_LINK BOOST_TEST_MAIN)

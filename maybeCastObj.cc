@@ -19,7 +19,6 @@ using namespace art;
 using namespace std;
 
 #ifdef CANVAS_USE_ROOTCPPABI
-
 bool
 detail::upcastAllowed(type_info const& tid_from, type_info const& tid_to)
 {
@@ -73,7 +72,72 @@ art::detail::maybeCastObj(void const* address,
     << cet::demangle_symbol(tiTo.name()) << "\n";
 }
 
-#else // _LIBCPPABI_VERSION
+#else // CANVAS_USE_ROOTCPPABI
+
+// When using libc++, under the assumption that it uses libc++abi
+// libc++abi implements the __class_type_info classes, but does
+// not expose them in cxxabi.h. However, seem to be able to
+// provide the declarations, link to c++abi and use them.
+// TODO:
+// 1. Note sure about providing *definition* of constructors.
+// 1. Configure time check on availability of __class_type_info?
+// 2. Configure time check on which c++ ABI library is used
+//
+//
+#ifdef _LIBCPPABI_VERSION
+namespace __cxxabiv1 {
+  // Type information for a class
+  class __class_type_info : public std::type_info {
+  public:
+    explicit __class_type_info(char const* n) : type_info(n) {}
+    ~__class_type_info() override;
+  };
+
+  // Type information for a class with a single non-virtual base
+  class __si_class_type_info : public __class_type_info {
+  public:
+    __class_type_info const* __base_type;
+    explicit __si_class_type_info(char const* n, __class_type_info const* base)
+      : __class_type_info(n), __base_type(base)
+    {}
+    ~__si_class_type_info() override;
+  };
+
+  // Helper class for __vmi_class_type.
+  struct __base_class_type_info {
+    __class_type_info const* __base_type;
+#if defined _GLIBCXX_LLP64
+    long long __offset_flags;
+#else
+    long __offset_flags;
+#endif
+    enum __offset_flags_masks {
+      __virtual_mask = 0x1,
+      __public_mask = 0x2,
+      __offset_shift = 8
+    };
+  };
+
+  // Type information for a class with multiple and/or virtual bases.
+  class __vmi_class_type_info : public __class_type_info {
+  public:
+    unsigned int __flags;
+    unsigned int __base_count;
+    __base_class_type_info __base_info[1];
+
+    enum __flags_masks {
+      __non_diamond_repeat_mask = 0x1,
+      __diamond_shaped_mask = 0x2,
+      // __flags_unknown_mask = 0x10
+    };
+
+    explicit __vmi_class_type_info(char const* n, int flags)
+      : __class_type_info(n), __flags(flags), __base_count(0)
+    {}
+    virtual ~__vmi_class_type_info(); // override;
+  };
+}
+#endif
 
 namespace {
 
@@ -85,8 +149,8 @@ namespace {
     long offset = 0L;
 
   public:
-    void print[[gnu::unused]]() const;
-    void reset[[gnu::unused]]();
+    void print [[gnu::unused]] () const;
+    void reset [[gnu::unused]] ();
   };
 
   void
