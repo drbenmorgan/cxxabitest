@@ -32,7 +32,7 @@ namespace {
     virtual int foo() {return 2;}
   };
 
-  class MCConcreteVirtual_C : public MCConcreteVirtual_B, MCConcrete {
+  class MCConcreteVirtual_C : public MCConcreteVirtual_B, public MCConcrete {
     virtual int foo() {return 3;}
   };
 
@@ -41,8 +41,10 @@ namespace {
   };
 
   // Multiple
-  class MCConcreteMultiple : public MCBase, MCOtherBase {
+  class MCConcreteMultiple : public MCBase, public MCOtherBase {
   };
+
+  // Ambiguous?
 }
 
 BOOST_AUTO_TEST_SUITE(maybeCastObj_t)
