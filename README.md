@@ -83,3 +83,5 @@ be found in `canvas_root_io` and `art`?).
 
 More test cases are needed, especially failure cases.
 
+NB: Checks for valid upcasts fail with the Root TClass-based implementation,
+possibly due (not confirmed) to lacking dictionary.

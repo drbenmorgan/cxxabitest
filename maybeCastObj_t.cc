@@ -78,6 +78,8 @@ BOOST_AUTO_TEST_CASE(mismatched_types)
 
 BOOST_AUTO_TEST_CASE(user_types)
 {
+  // NB: In all of the below, tests of valid upcasts fail on
+  // Root implementation. *Possibly* due to lack of dictionary?
   // Cast from base <-> concrete (non-virtual)
   BOOST_TEST_REQUIRE((!runUpcastAllowed<MCBase,MCConcrete>()));
   BOOST_TEST_REQUIRE((runUpcastAllowed<MCConcrete,MCBase>()));
