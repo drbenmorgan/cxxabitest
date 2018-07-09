@@ -6,11 +6,6 @@
 
 #include <cxxabi.h>
 
-#ifdef CANVAS_USE_ROOTCPPABI
-#include "TClass.h"
-#include "TClassRef.h"
-#endif
-
 #include <iomanip>
 #include <iostream>
 #include <typeinfo>
@@ -19,69 +14,16 @@ using namespace art;
 using namespace std;
 
 #ifdef CANVAS_USE_ROOTCPPABI
-bool
-detail::upcastAllowed(type_info const& tid_from, type_info const& tid_to)
-{
-  if (tid_from == tid_to) {
-    return true;
-  }
-  auto const clFrom = TClass::GetClass(tid_from);
-  if (!clFrom) {
-    return false;
-  }
-  auto const clTo = TClass::GetClass(tid_to);
-  if (!clTo) {
-    return false;
-  }
-  return clFrom->InheritsFrom(clTo);
-}
-
-void const*
-art::detail::maybeCastObj(void const* address,
-                          std::type_info const& tiFrom,
-                          std::type_info const& tiTo)
-{
-  if (tiFrom == tiTo) {
-    // The do nothing case.
-    return address;
-  }
-  auto const clFrom = TClass::GetClass(tiFrom);
-  auto const clTo = TClass::GetClass(tiTo);
-  if (clFrom && clTo) {
-    void const* castAddr(nullptr);
-    if (clFrom->InheritsFrom(clTo)) {
-      // The upcast case, let ROOT do it.
-      castAddr = clFrom->DynamicCast(clTo, const_cast<void*>(address), true);
-    } else if (clTo->InheritsFrom(clFrom)) {
-      // The downcast case is forbidden.
-      throw Exception(errors::TypeConversion)
-        << "art::Wrapper<> : unable to convert type "
-        << cet::demangle_symbol(tiFrom.name()) << " to "
-        << cet::demangle_symbol(tiTo.name()) << ", which is a subclass.\n";
-    }
-    if (castAddr != nullptr) {
-      // ROOT succeeded, done.
-      return castAddr;
-    }
-  }
-  // ROOT could not do the upcast, or there was no inheritance
-  // relationship between the classes, die.
-  throw Exception(errors::TypeConversion)
-    << "art::Wrapper<> : unable to convert type "
-    << cet::demangle_symbol(tiFrom.name()) << " to "
-    << cet::demangle_symbol(tiTo.name()) << "\n";
-}
-
-#else // CANVAS_USE_ROOTCPPABI
-
+#include "maybeCastObjRootImpl.icc"
+#else
 // When using libc++, under the assumption that it uses libc++abi
 // libc++abi implements the __class_type_info classes, but does
 // not expose them in cxxabi.h. However, seem to be able to
 // provide the declarations, link to c++abi and use them.
 // TODO:
 // 1. Note sure about providing *definition* of constructors.
-// 1. Configure time check on availability of __class_type_info?
-// 2. Configure time check on which c++ ABI library is used
+// 2. Configure time check on availability of __class_type_info?
+// 3. Configure time check on which c++ ABI library is used?
 //
 //
 #ifdef _LIBCPPABI_VERSION
