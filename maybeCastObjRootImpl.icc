@@ -53,4 +53,3 @@ art::detail::maybeCastObj(void const* address,
     << cet::demangle_symbol(tiFrom.name()) << " to "
     << cet::demangle_symbol(tiTo.name()) << "\n";
 }
-
